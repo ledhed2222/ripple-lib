@@ -98,7 +98,7 @@ api.connect().then(() => {
     api.prepareTransaction(multiSignSetupTransaction).then((prepared) => {
         console.log(prepared);
         jonSign = api.sign(prepared.txJSON, jon.secret).signedTransaction;
-        api.submit(jonSign).then( response => {
+        api.request('submit', { tx_blob: jonSign }).then( response => {
             console.log(response.resultCode, response.resultMessage);
 
             // multi sign a transaction
@@ -111,7 +111,7 @@ api.connect().then(() => {
 
                 // signatures are combined and submitted
                 let combinedTx = api.combine([ayaSign, branSign]);
-                api.submit(combinedTx.signedTransaction).then(response => {
+                api.request('submit', { tx_blob: combinedTx.signedTransaction }).then(response => {
                     console.log(response.tx_json.hash);
                     return api.disconnect();
                 }).catch(console.error);

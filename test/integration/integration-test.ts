@@ -137,7 +137,7 @@ function makeTrustLine(testcase, address, secret) {
       if (address === wallet.getAddress()) {
         testcase.transactions.push(signed.id)
       }
-      return api.submit(signed.signedTransaction)
+      return api.request('submit', { tx_blob: signed.signedTransaction })
     })
     .then(() => ledgerAccept(api))
   return trust
@@ -147,7 +147,7 @@ function makeOrder(api, address, specification, secret) {
   return api
     .prepareOrder(address, specification)
     .then((data) => api.sign(data.txJSON, secret))
-    .then((signed) => api.submit(signed.signedTransaction))
+    .then((signed) => api.request('submit', { tx_blob: signed.signedTransaction }))
     .then(() => ledgerAccept(api))
 }
 
@@ -163,7 +163,7 @@ function setupAccounts(testcase) {
       return api
         .prepareSettings(masterAccount, {defaultRipple: true})
         .then((data) => api.sign(data.txJSON, masterSecret))
-        .then((signed) => api.submit(signed.signedTransaction))
+        .then((signed) => api.request('submit', { tx_blob: signed.signedTransaction }))
         .then(() => ledgerAccept(api))
     })
     .then(() =>

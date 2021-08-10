@@ -8,12 +8,12 @@ import {assertRejects, assertResultMatch, TestSuite} from '../../utils'
  */
 export default <TestSuite>{
   'submit': async (api, address) => {
-    const result = await api.submit(responses.sign.normal.signedTransaction)
+    const result = await api.request('submit', { tx_blob: responses.sign.normal.signedTransaction })
     assertResultMatch(result, responses.submit, 'submit')
   },
 
   'submit - failure': async (api, address) => {
-    await assertRejects(api.submit('BAD'), api.errors.RippledError)
+    await assertRejects(api.request('submit', { tx_blob: 'BAD' }), api.errors.RippledError)
     // assert.strictEqual(error.data.resultCode, 'temBAD_FEE')
   }
 }

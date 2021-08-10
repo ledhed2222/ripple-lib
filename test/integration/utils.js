@@ -36,7 +36,7 @@ function pay(api, from, to, amount, secret, currency = 'XRP', counterparty) {
     .then(data => api.sign(data.txJSON, secret))
     .then(signed => {
       id = signed.id;
-      return api.submit(signed.signedTransaction);
+      return api.request('submit', { tx_blob: signed.signedTransaction });
     })
     .then(() => ledgerAccept(api))
     .then(() => id);

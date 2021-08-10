@@ -99,7 +99,7 @@ async function performPayments(payments) {
     finalResults.push({
       id: signed.id
     })
-    const result = await api.submit(signed.signedTransaction)
+    const result = await api.request('submit', { tx_blob: signed.signedTransaction })
 
     // Most of the time we'll get 'tesSUCCESS' or (after many submissions) 'terQUEUED'
     console.log(`tx ${i} - tentative: ${result.resultCode}`)
