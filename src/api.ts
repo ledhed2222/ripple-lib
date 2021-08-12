@@ -46,7 +46,6 @@ import prepareSettings from './transaction/settings'
 import prepareTicketCreate from './transaction/ticket'
 import sign from './transaction/sign'
 import combine from './transaction/combine'
-import { generateXAddress } from './offline/utils'
 import {deriveKeypair, deriveAddress, deriveXAddress} from './offline/derive'
 import computeLedgerHash from './offline/ledgerhash'
 import signPaymentChannelClaim from './offline/sign-payment-channel-claim'
@@ -344,8 +343,6 @@ class RippleAPI extends EventEmitter {
     } while (!!marker && count < countTo && lastBatchLength !== 0)
     return results
   }
-
-  generateXAddress = generateXAddress // @deprecated Invoke from top-level package instead
 
   connect = connect
   disconnect = disconnect

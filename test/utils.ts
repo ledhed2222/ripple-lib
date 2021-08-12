@@ -121,23 +121,28 @@ export function getAllPublicMethods(api: RippleAPI) {
   ).filter((key) => !key.startsWith('_'))
 }
 
-export function loadTestSuites(): LoadedTestSuite[] {
-  const allTests = fs.readdirSync(path.join(__dirname, 'api'), {
+function loadTestsFromFolder(folderName: string): LoadedTestSuite[] {
+  const tests = fs.readdirSync(path.join(__dirname, folderName), {
     encoding: 'utf8'
   })
-  return allTests
-    .map((methodName) => {
-      if (methodName.startsWith('.DS_Store')) {
-        return null
-      }
-      const testSuite = require(`./api/${methodName}`)
-      return {
-        name: methodName,
-        config: testSuite.config || {},
-        tests: Object.entries(testSuite.default || {})
-      } as LoadedTestSuite
-    })
-    .filter(Boolean)
+
+  return tests
+  .map((methodName) => {
+    if (methodName.startsWith('.DS_Store')) {
+      return null
+    }
+    const testSuite = require(`./${folderName}/${methodName}`)
+    return {
+      name: methodName,
+      config: testSuite.config || {},
+      tests: Object.entries(testSuite.default || {})
+    } as LoadedTestSuite
+  })
+  .filter(Boolean)
+}
+
+export function loadTestSuites(): LoadedTestSuite[] {
+  return loadTestsFromFolder("api").concat(loadTestsFromFolder("offline"))
 }
 
 /**
