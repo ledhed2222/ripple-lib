@@ -1,5 +1,6 @@
 import responses from '../../fixtures/responses'
-import {assertRejects, assertResultMatch, TestSuite} from '../../utils'
+import submitFailure from '../../fixtures/responses/submit-failure.json'
+import {assertResultMatch, TestSuite} from '../../utils'
 
 /**
  * Every test suite exports their tests in the default object.
@@ -13,7 +14,6 @@ export default <TestSuite>{
   },
 
   'submit - failure': async (api, address) => {
-    await assertRejects(api.request('submit', { tx_blob: 'BAD' }), api.errors.RippledError)
-    // assert.strictEqual(error.data.resultCode, 'temBAD_FEE')
+    assertResultMatch(await api.request('submit', { tx_blob: 'BAD' }), submitFailure)
   }
 }

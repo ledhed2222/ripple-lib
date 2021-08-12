@@ -3,13 +3,9 @@
   "title": "submit",
   "type": "object",
   "properties": {
-    "resultCode": {
-      "type": "string",
-      "description": "Deprecated: Use `engine_result` instead."
-    },
-    "resultMessage": {
-      "type": "string",
-      "description": "Deprecated: Use `engine_result_message` instead."
+    "success": {
+      "type": "boolean",
+      "description": "Indicates whether the transaction successfully submitted. On immediate failure it will return false."
     },
     "engine_result": {
       "type": "string",
@@ -32,6 +28,6 @@
       "description": "The complete transaction in JSON format."
     }
   },
-  "required": ["resultCode", "resultMessage", "engine_result", "engine_result_code", "engine_result_message", "tx_blob", "tx_json"],
+  "required": ["success", "engine_result", "engine_result_code", "engine_result_message", "tx_blob", "tx_json"],
   "additionalProperties": false
 }

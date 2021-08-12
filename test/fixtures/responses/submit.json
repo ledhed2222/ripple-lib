@@ -1,6 +1,5 @@
 {
-  "resultCode": "tesSUCCESS",
-  "resultMessage": "The transaction was applied. Only final in a validated ledger.",
+  "success": true,
   "engine_result": "tesSUCCESS",
   "engine_result_code": 0,
   "engine_result_message": "The transaction was applied. Only final in a validated ledger.",
