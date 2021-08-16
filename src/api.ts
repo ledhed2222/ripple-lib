@@ -48,7 +48,6 @@ import sign from './transaction/sign'
 import combine from './transaction/combine'
 import {deriveAddress, deriveXAddress} from './offline/derive'
 import computeLedgerHash from './offline/ledgerhash'
-import verifyPaymentChannelClaim from './offline/verify-payment-channel-claim'
 import getLedger from './ledger/ledger'
 
 import {
@@ -383,7 +382,6 @@ class RippleAPI extends EventEmitter {
   sign = sign
   combine = combine
 
-  verifyPaymentChannelClaim = verifyPaymentChannelClaim // @deprecated Invoke from top-level package instead
   errors = errors
 
   static deriveXAddress = deriveXAddress
