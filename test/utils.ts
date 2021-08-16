@@ -29,7 +29,7 @@ export interface TestSuite {
  * If no test suite exists, we return this object with `isMissing: true`
  * so that we can report it.
  */
-interface LoadedTestSuite {
+export interface LoadedTestSuite {
   name: string
   tests: [string, TestFn][]
   config: {
@@ -121,7 +121,7 @@ export function getAllPublicMethods(api: RippleAPI) {
   ).filter((key) => !key.startsWith('_'))
 }
 
-function loadTestsFromFolder(folderName: string): LoadedTestSuite[] {
+export function loadTestSuitesFromFolder(folderName: string): LoadedTestSuite[] {
   const tests = fs.readdirSync(path.join(__dirname, folderName), {
     encoding: 'utf8'
   })
@@ -139,10 +139,6 @@ function loadTestsFromFolder(folderName: string): LoadedTestSuite[] {
     } as LoadedTestSuite
   })
   .filter(Boolean)
-}
-
-export function loadTestSuites(): LoadedTestSuite[] {
-  return loadTestsFromFolder("api").concat(loadTestsFromFolder("offline"))
 }
 
 /**
