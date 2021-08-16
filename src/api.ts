@@ -3,7 +3,6 @@ import {
   Connection,
   errors,
   validate,
-  xrpToDrops,
   dropsToXrp,
   rippleTimeToISO8601,
   iso8601ToRippleTime,
@@ -394,7 +393,6 @@ class RippleAPI extends EventEmitter {
    static encodeXAddress = encodeXAddress
    static decodeXAddress = decodeXAddress
 
-  xrpToDrops = xrpToDrops // @deprecated Invoke from top-level package instead
   dropsToXrp = dropsToXrp // @deprecated Invoke from top-level package instead
   rippleTimeToISO8601 = rippleTimeToISO8601 // @deprecated Invoke from top-level package instead
   iso8601ToRippleTime = iso8601ToRippleTime // @deprecated Invoke from top-level package instead
