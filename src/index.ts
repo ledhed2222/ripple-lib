@@ -8,3 +8,5 @@ export * from './utils/utils';
 
 // Broadcast api is experimental
 export {RippleAPIBroadcast} from './broadcast'
+
+export * from './Wallet'
