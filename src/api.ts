@@ -3,8 +3,6 @@ import {
   Connection,
   errors,
   validate,
-  rippleTimeToISO8601,
-  iso8601ToRippleTime,
   txFlags,
   ensureClassicAddress
 } from './common'
@@ -392,8 +390,6 @@ class RippleAPI extends EventEmitter {
    static encodeXAddress = encodeXAddress
    static decodeXAddress = decodeXAddress
 
-  rippleTimeToISO8601 = rippleTimeToISO8601 // @deprecated Invoke from top-level package instead
-  iso8601ToRippleTime = iso8601ToRippleTime // @deprecated Invoke from top-level package instead
   txFlags = txFlags
 
   isValidAddress = schemaValidator.isValidAddress
