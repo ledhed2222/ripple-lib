@@ -384,7 +384,6 @@ class RippleAPI extends EventEmitter {
   sign = sign
   combine = combine
 
-  computeLedgerHash = computeLedgerHash // @deprecated Invoke from top-level package instead
   signPaymentChannelClaim = signPaymentChannelClaim // @deprecated Invoke from top-level package instead
   verifyPaymentChannelClaim = verifyPaymentChannelClaim // @deprecated Invoke from top-level package instead
   errors = errors
