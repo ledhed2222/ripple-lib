@@ -1,4 +1,5 @@
 import assert from 'assert-diff'
+import { deriveAddress } from 'ripple-keypairs/dist'
 import {TestSuite} from '../../utils'
 
 /**
@@ -8,9 +9,9 @@ import {TestSuite} from '../../utils'
  */
 export default <TestSuite>{
   'returns address for public key': async (api, address) => {
-    var address = api.deriveAddress(
+    var derivedAddress = deriveAddress(
       '035332FBA71D705BD5D97014A833BE2BBB25BEFCD3506198E14AFEA241B98C2D06'
     )
-    assert.equal(address, 'rLczgQHxPhWtjkaQqn3Q6UM8AbRbbRvs5K')
+    assert.equal(derivedAddress, 'rLczgQHxPhWtjkaQqn3Q6UM8AbRbbRvs5K')
   }
 }
