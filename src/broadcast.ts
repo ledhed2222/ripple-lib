@@ -34,7 +34,7 @@ class RippleAPIBroadcast extends RippleAPI {
 
     // synchronous methods are all passed directly to the first api instance
     const defaultAPI = apis[0]
-    const syncMethods = ['sign', 'computeLedgerHash']
+    const syncMethods = ['sign']
     syncMethods.forEach((name) => {
       this[name] = defaultAPI[name].bind(defaultAPI)
     })
