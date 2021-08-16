@@ -384,10 +384,6 @@ class RippleAPI extends EventEmitter {
   sign = sign
   combine = combine
 
-  //submit = submit // @deprecated Use api.request('submit', { tx_blob: signedTransaction }) instead
-
-  //deriveKeypair = deriveKeypair // @deprecated Invoke from top-level package instead
-  //deriveAddress = deriveAddress // @deprecated Invoke from top-level package instead
   computeLedgerHash = computeLedgerHash // @deprecated Invoke from top-level package instead
   signPaymentChannelClaim = signPaymentChannelClaim // @deprecated Invoke from top-level package instead
   verifyPaymentChannelClaim = verifyPaymentChannelClaim // @deprecated Invoke from top-level package instead
