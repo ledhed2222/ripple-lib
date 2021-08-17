@@ -5,10 +5,10 @@ import {TestSuite} from '../../utils'
 /**
  * Every test suite exports their tests in the default object.
  * - Check out the "TestSuite" type for documentation on the interface.
- * - Check out "test/api/index.ts" for more information about the test runner.
+ * - Check out "test/client/index.ts" for more information about the test runner.
  */
 export default <TestSuite>{
-  'returns keypair for secret': async (api, address) => {
+  'returns keypair for secret': async (client, address) => {
     var keypair = deriveKeypair('snsakdSrZSLkYpCXxfRkS4Sh96PMK')
     assert.equal(
       keypair.privateKey,
@@ -20,7 +20,7 @@ export default <TestSuite>{
     )
   },
 
-  'returns keypair for ed25519 secret': async (api, address) => {
+  'returns keypair for ed25519 secret': async (client, address) => {
     var keypair = deriveKeypair('sEdV9eHWbibBnTj7b1H5kHfPfv7gudx')
     assert.equal(
       keypair.privateKey,
@@ -32,7 +32,7 @@ export default <TestSuite>{
     )
   },
 
-  'throws with an invalid secret': async (api, address) => {
+  'throws with an invalid secret': async (client, address) => {
     assert.throws(() => {
       deriveKeypair('...')
     }, /^Error: Non-base58 character$/)

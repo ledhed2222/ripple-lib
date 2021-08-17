@@ -8,17 +8,17 @@ const {computeLedgerHash: REQUEST_FIXTURES} = requests
 /**
  * Every test suite exports their tests in the default object.
  * - Check out the "TestSuite" type for documentation on the interface.
- * - Check out "test/api/index.ts" for more information about the test runner.
+ * - Check out "test/client/index.ts" for more information about the test runner.
  */
 export default <TestSuite>{
-  'given corrupt data - should fail': async (api, address) => {
+  'given corrupt data - should fail': async (client, address) => {
     const request = {
       includeTransactions: true,
       includeState: true,
       includeAllData: true,
       ledgerVersion: 38129
     }
-    const ledger = await api.getLedger(request)
+    const ledger = await client.getLedger(request)
     assert.strictEqual(
       // @ts-ignore
       ledger.transactions[0].rawTransaction,
@@ -32,7 +32,7 @@ export default <TestSuite>{
     try {
       hash = computeLedgerHeaderHash(ledger, {computeTreeHashes: true})
     } catch (error) {
-      assert(error instanceof api.errors.ValidationError)
+      assert(error instanceof client.errors.ValidationError)
       assert.strictEqual(
         error.message,
         'transactionHash in header does not match computed hash of transactions'
@@ -52,7 +52,7 @@ export default <TestSuite>{
   },
 
   'given ledger without raw transactions - should throw': async (
-    api,
+    client,
     address
   ) => {
     const request = {
@@ -61,7 +61,7 @@ export default <TestSuite>{
       includeAllData: true,
       ledgerVersion: 38129
     }
-    const ledger = await api.getLedger(request)
+    const ledger = await client.getLedger(request)
     assert.strictEqual(
       // @ts-ignore
       ledger.transactions[0].rawTransaction,
@@ -75,7 +75,7 @@ export default <TestSuite>{
     try {
       hash = computeLedgerHeaderHash(ledger, {computeTreeHashes: true})
     } catch (error) {
-      assert(error instanceof api.errors.ValidationError)
+      assert(error instanceof client.errors.ValidationError)
       assert.strictEqual(
         error.message,
         'ledger' + ' is missing raw transactions'
@@ -89,7 +89,7 @@ export default <TestSuite>{
   },
 
   'given ledger without state or transactions - only compute ledger hash': async (
-    api,
+    client,
     address
   ) => {
     const request = {
@@ -98,7 +98,7 @@ export default <TestSuite>{
       includeAllData: true,
       ledgerVersion: 38129
     }
-    const ledger = await api.getLedger(request)
+    const ledger = await client.getLedger(request)
     assert.strictEqual(
       // @ts-ignore
       ledger.transactions[0].rawTransaction,
@@ -106,7 +106,7 @@ export default <TestSuite>{
     )
     ledger.parentCloseTime = ledger.closeTime
     const computeLedgerHash = computeLedgerHeaderHash
-    const ValidationError = api.errors.ValidationError
+    const ValidationError = client.errors.ValidationError
     function testCompute(ledger, expectedError) {
       let hash = computeLedgerHash(ledger)
       assert.strictEqual(
@@ -136,14 +136,14 @@ export default <TestSuite>{
     testCompute(ledger, 'rawState property is missing from the ledger')
   },
 
-  'wrong hash': async (api, address) => {
+  'wrong hash': async (client, address) => {
     const request = {
       includeTransactions: true,
       includeState: true,
       includeAllData: true,
       ledgerVersion: 38129
     }
-    const ledger = await api.getLedger(request)
+    const ledger = await client.getLedger(request)
     assertResultMatch(ledger, responses.getLedger.full, 'getLedger')
     const newLedger = {
       ...ledger,
@@ -156,8 +156,8 @@ export default <TestSuite>{
     }, /does not match computed hash of state/)
   },
 
-  'computeLedgerHash': async (api, address) => {
-    // const api = new RippleAPI()
+  'computeLedgerHash': async (client, address) => {
+    // const client = new Client()
     const header = REQUEST_FIXTURES.header
     const ledgerHash = computeLedgerHeaderHash(header)
     assert.strictEqual(
@@ -166,8 +166,8 @@ export default <TestSuite>{
     )
   },
 
-  'computeLedgerHash - with transactions': async (api, address) => {
-    // const api = new RippleAPI()
+  'computeLedgerHash - with transactions': async (client, address) => {
+    // const client = new Client()
     const header = {
       ...REQUEST_FIXTURES.header,
       transactionHash: undefined,
@@ -180,8 +180,8 @@ export default <TestSuite>{
     )
   },
 
-  'computeLedgerHash - incorrent transaction_hash': async (api, address) => {
-    // const api = new RippleAPI()
+  'computeLedgerHash - incorrent transaction_hash': async (client, address) => {
+    // const client = new Client()
     const header = Object.assign({}, REQUEST_FIXTURES.header, {
       transactionHash:
         '325EACC5271322539EEEC2D6A5292471EF1B3E72AE7180533EFC3B8F0AD435C9'
