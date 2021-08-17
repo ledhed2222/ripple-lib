@@ -7,6 +7,7 @@ import {isValidClassicAddress} from 'ripple-address-codec'
 import {payTo, ledgerAccept} from './utils'
 import {errors} from 'ripple-api/common'
 import {isValidSecret} from 'ripple-api/common/utils'
+import { generateAddressAPI } from '../../src/offline/generate-address'
 
 // how long before each test case times out
 const TIMEOUT = 20000
@@ -73,8 +74,7 @@ function testTransaction(
   assert.strictEqual(txData.Account, address)
   const signedData = testcase.api.sign(txJSON, secret)
   console.log('PREPARED...')
-  return testcase.api
-    .submit(signedData.signedTransaction)
+  return testcase.api.request('submit', { tx_blob: signedData.signedTransaction })
     .then((data) =>
       testcase.test.title.indexOf('multisign') !== -1
         ? acceptLedger(testcase.api).then(() => data)
@@ -232,7 +232,7 @@ function suiteSetup(this: any) {
     setup
       .bind(this)(serverUrl)
       .then(() => ledgerAccept(this.api))
-      .then(() => (this.newWallet = this.api.generateAddress()))
+      .then(() => (this.newWallet = generateAddressAPI()))
       // two times to give time to server to send `ledgerClosed` event
       // so getLedgerVersion will return right value
       .then(() => ledgerAccept(this.api))
@@ -507,7 +507,7 @@ describe('integration tests', function () {
   })
 
   it('generateWallet', function () {
-    const newWallet = this.api.generateAddress()
+    const newWallet = this.generateAddressAPI()
     assert(newWallet && newWallet.address && newWallet.secret)
     assert(isValidClassicAddress(newWallet.address))
     assert(isValidSecret(newWallet.secret))
@@ -575,8 +575,8 @@ describe('integration tests - standalone rippled', function () {
               signed1.signedTransaction,
               signed2.signedTransaction
             ])
-            return this.api
-              .submit(combined.signedTransaction)
+            console.log(combined)
+            return this.api.request('submit', { tx_blob: combined.signedTransaction })
               .then((response) => acceptLedger(this.api).then(() => response))
               .then((response) => {
                 assert.strictEqual(response.resultCode, 'tesSUCCESS')
