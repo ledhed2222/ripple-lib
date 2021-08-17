@@ -40,7 +40,6 @@ class ClientBroadcast extends Client {
     })
 
     clients.forEach((client) => {
-      client.on('ledger', this.onLedgerEvent.bind(this))
       client.on('error', (errorCode, errorMessage, data) =>
         this.emit('error', errorCode, errorMessage, data)
       )
