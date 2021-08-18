@@ -236,7 +236,11 @@ function suiteSetup(this: any) {
       // two times to give time to server to send `ledgerClosed` event
       // so getLedgerVersion will return right value
       .then(() => ledgerAccept(this.client))
-      .then(() => this.client.getLedgerVersion())
+      .then(() => this.client.request({
+        command: 'ledger', 
+        ledger_index: 'validated'
+      })
+      .then(response => response.result.ledger_index))
       .then((ledgerVersion) => {
         this.startLedgerVersion = ledgerVersion
       })
@@ -255,7 +259,12 @@ describe('integration tests', function () {
   afterEach(teardown)
 
   it('settings', function () {
-    return this.client.getLedgerVersion().then((ledgerVersion) => {
+    return this.client.request({
+      command: 'ledger', 
+      ledger_index: 'validated'
+    })
+    .then(response => response.result.ledger_index)
+    .then((ledgerVersion) => {
       return this.client
         .prepareSettings(address, requests.prepareSettings.domain, instructions)
         .then((prepared) =>
@@ -265,7 +274,12 @@ describe('integration tests', function () {
   })
 
   it('trustline', function () {
-    return this.client.getLedgerVersion().then((ledgerVersion) => {
+    return this.client.request({
+      command: 'ledger', 
+      ledger_index: 'validated'
+    })
+    .then(response => response.result.ledger_index)
+    .then((ledgerVersion) => {
       return this.client
         .prepareTrustline(
           address,
@@ -290,7 +304,12 @@ describe('integration tests', function () {
         amount: amount
       }
     }
-    return this.client.getLedgerVersion().then((ledgerVersion) => {
+    return this.client.request({
+      command: 'ledger', 
+      ledger_index: 'validated'
+    })
+    .then(response => response.result.ledger_index)
+    .then((ledgerVersion) => {
       return this.client
         .preparePayment(address, paymentSpecification, instructions)
         .then((prepared) =>
@@ -312,7 +331,12 @@ describe('integration tests', function () {
         value: '0.0002'
       }
     }
-    return this.client.getLedgerVersion().then((ledgerVersion) => {
+    return this.client.request({
+      command: 'ledger', 
+      ledger_index: 'validated'
+    })
+    .then(response => response.result.ledger_index)
+    .then((ledgerVersion) => {
       return this.client
         .prepareOrder(address, orderSpecification, instructions)
         .then((prepared) =>
@@ -367,13 +391,6 @@ describe('integration tests', function () {
       assert.strictEqual(typeof fee, 'string')
       assert(!isNaN(Number(fee)))
       assert(parseFloat(fee) === Number(fee))
-    })
-  })
-
-  it('getLedgerVersion', function () {
-    return this.client.getLedgerVersion().then((ledgerVersion) => {
-      assert.strictEqual(typeof ledgerVersion, 'number')
-      assert(ledgerVersion >= this.startLedgerVersion)
     })
   })
 
@@ -538,7 +555,12 @@ describe('integration tests - standalone rippled', function () {
     let minLedgerVersion = null
     return payTo(this.client, address)
       .then(() => {
-        return this.client.getLedgerVersion().then((ledgerVersion) => {
+        return this.client.request({
+          command: 'ledger', 
+          ledger_index: 'validated'
+        })
+        .then(response => response.result.ledger_index)
+        .then((ledgerVersion) => {
           minLedgerVersion = ledgerVersion
           return this.client
             .prepareSettings(address, {signers}, instructions)

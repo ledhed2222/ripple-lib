@@ -8,7 +8,7 @@ class ClientBroadcast extends Client {
     super(options)
 
     const clients: Client[] = servers.map(
-      (server) => new Client(Object.assign({}, options, {server}))
+      (server) => new Client({...options, server})
     )
 
     // exposed for testing

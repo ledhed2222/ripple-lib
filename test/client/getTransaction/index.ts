@@ -1,10 +1,10 @@
 import assert from 'assert-diff'
 import {
-  MissingLedgerHistoryError,
+  // MissingLedgerHistoryError,
   NotFoundError,
   UnexpectedError
 } from 'xrpl-local/common/errors'
-import {PendingLedgerVersionError} from '../../../src/common/errors'
+// import {PendingLedgerVersionError} from '../../../src/common/errors'
 import hashes from '../../fixtures/hashes.json'
 import responses from '../../fixtures/responses'
 import ledgerClosed from '../../fixtures/rippled/ledger-close-newer.json'
@@ -209,37 +209,37 @@ export default <TestSuite>{
     await assertRejects(client.getTransaction(hash), NotFoundError)
   },
 
-  'missing ledger history': async (client, address) => {
-    const hash = hashes.NOTFOUND_TRANSACTION_HASH
-    // make gaps in history
-    closeLedger(client.connection)
+  // 'missing ledger history': async (client, address) => {
+  //   const hash = hashes.NOTFOUND_TRANSACTION_HASH
+  //   // make gaps in history
+  //   closeLedger(client.connection)
 
-    await assertRejects(client.getTransaction(hash), MissingLedgerHistoryError)
-  },
+  //   await assertRejects(client.getTransaction(hash), MissingLedgerHistoryError)
+  // },
 
-  'missing ledger history with ledger range': async (client, address) => {
-    const hash = hashes.NOTFOUND_TRANSACTION_HASH
-    const options = {
-      minLedgerVersion: 32569,
-      maxLedgerVersion: 32571
-    }
-    await assertRejects(
-      client.getTransaction(hash, options),
-      MissingLedgerHistoryError
-    )
-  },
+  // 'missing ledger history with ledger range': async (client, address) => {
+  //   const hash = hashes.NOTFOUND_TRANSACTION_HASH
+  //   const options = {
+  //     minLedgerVersion: 32569,
+  //     maxLedgerVersion: 32571
+  //   }
+  //   await assertRejects(
+  //     client.getTransaction(hash, options),
+  //     MissingLedgerHistoryError
+  //   )
+  // },
 
-  'not found - future maxLedgerVersion': async (client, address) => {
-    const hash = hashes.NOTFOUND_TRANSACTION_HASH
-    const options = {
-      maxLedgerVersion: 99999999999
-    }
-    await assertRejects(
-      client.getTransaction(hash, options),
-      PendingLedgerVersionError,
-      "maxLedgerVersion is greater than server's most recent validated ledger"
-    )
-  },
+  // 'not found - future maxLedgerVersion': async (client, address) => {
+  //   const hash = hashes.NOTFOUND_TRANSACTION_HASH
+  //   const options = {
+  //     maxLedgerVersion: 99999999999
+  //   }
+  //   await assertRejects(
+  //     client.getTransaction(hash, options),
+  //     PendingLedgerVersionError,
+  //     "maxLedgerVersion is greater than server's most recent validated ledger"
+  //   )
+  // },
 
   'transaction not validated': async (client, address) => {
     const hash =
