@@ -205,7 +205,7 @@ type MarkerResponse = AccountChannelsResponse
                     | AccountTxResponse
                     | LedgerDataResponse
 
-class Client extends EventEmitter {
+export class Client extends EventEmitter {
   _feeCushion: number
   _maxFeeXRP: string
 
@@ -543,32 +543,4 @@ class Client extends EventEmitter {
 
   isValidAddress = schemaValidator.isValidAddress
   isValidSecret = schemaValidator.isValidSecret
-}
-
-export {
-  Client,
-  Connection
-}
-
-export type {
-  AccountObjectsRequest,
-  AccountObjectsResponse,
-  AccountOffersRequest,
-  AccountOffersResponse,
-  AccountInfoRequest,
-  AccountInfoResponse,
-  AccountLinesRequest,
-  AccountLinesResponse,
-  BookOffersRequest,
-  BookOffersResponse,
-  GatewayBalancesRequest,
-  GatewayBalancesResponse,
-  // LedgerRequest,
-  // LedgerResponse,
-  // LedgerDataRequest,
-  // LedgerDataResponse,
-  // LedgerEntryRequest,
-  // LedgerEntryResponse,
-  // ServerInfoRequest,
-  // ServerInfoResponse
 }
