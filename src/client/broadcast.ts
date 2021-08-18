@@ -1,4 +1,4 @@
-import {Client, ClientOptions} from './'
+import {Client, ClientOptions} from './client'
 
 class BroadcastClient extends Client {
   ledgerVersion: number | undefined = undefined
