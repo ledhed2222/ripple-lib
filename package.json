@@ -1,6 +1,6 @@
 {
   "name": "@ledhed2222/ripple-lib",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "license": "ISC",
   "description": "Experimental fork of ripple-lib",
   "files": [
