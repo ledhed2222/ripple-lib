@@ -2,7 +2,7 @@ import {assertResultMatch, TestSuite, assertRejects} from '../../utils'
 import responses from '../../fixtures/responses'
 import requests from '../../fixtures/requests'
 import {ValidationError} from 'ripple-api/common/errors'
-import binary from 'ripple-binary-codec'
+import binary from '@ledhed2222/ripple-binary-codec'
 import assert from 'assert-diff'
 import {RippleAPI} from 'ripple-api'
 
