@@ -37,7 +37,7 @@ const validateOnLedger = (
   }
 
   // Confirm that URI is a correctly-encoded data URI
-  if (isDataUriValid(uri)) {
+  if (!isDataUriValid(uri)) {
     throw new ValidationError(`${uri} is not a correctly-encoded data URI, as recommended`)
   }
 }
