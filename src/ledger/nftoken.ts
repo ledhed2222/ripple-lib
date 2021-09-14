@@ -44,7 +44,7 @@ const validateOnLedger = (
 
 const isDataUriValid = (uri: string): boolean => {
   const regex = /^data:([-\w]+\/[-+\w.]+)?((?:;?[\w]+=[-\w]+)*)(;base64)?,(.*)/
-  return regex.test(uri.trim())
+  return regex.test(uri)
 }
 
 const validateCentralizedOffLedger = async (
