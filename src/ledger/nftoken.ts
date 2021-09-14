@@ -43,7 +43,7 @@ const validateOnLedger = (
 }
 
 const isDataUriValid = (uri: string): boolean => {
-  const regex = /^data:([-\w]+\/[-+\w.]+)?((?:;?[\w]+=[-\w]+)*)(;base64)?,(.*)/
+  const regex = /data:([-\w]+\/[-+\w.]+)?(;?[\w]+=[-\w]+)*(;base64)?,.*/g
   return regex.test(uri)
 }
 
