@@ -1,5 +1,4 @@
 import axios from 'axios'
-import parseDataUri from 'data-urls'
 import toml from 'toml'
 
 import {RippleAPI} from '..'
@@ -38,9 +37,14 @@ const validateOnLedger = (
   }
 
   // Confirm that URI is a correctly-encoded data URI
-  if (parseDataUri(uri) == null) {
+  if (isDataUriValid(uri)) {
     throw new ValidationError(`${uri} is not a correctly-encoded data URI, as recommended`)
   }
+}
+
+const isDataUriValid = (uri: string): boolean => {
+  const regex = /^data:([-\w]+\/[-+\w.]+)?((?:;?[\w]+=[-\w]+)*)(;base64)?,(.*)/
+  return regex.test(uri.trim())
 }
 
 const validateCentralizedOffLedger = async (
