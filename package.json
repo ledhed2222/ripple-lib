@@ -24,7 +24,6 @@
     "@types/ws": "^7.2.0",
     "axios": "^0.21.1",
     "bignumber.js": "^9.0.0",
-    "data-urls": "^3.0.0",
     "https-proxy-agent": "^5.0.0",
     "jsonschema": "1.2.2",
     "lodash": "^4.17.4",
