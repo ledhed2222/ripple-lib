@@ -1,5 +1,5 @@
 import assert from 'assert-diff'
-import binary from 'ripple-binary-codec'
+import binary from '@ledhed2222/ripple-binary-codec'
 import requests from '../../fixtures/requests'
 import responses from '../../fixtures/responses'
 import {assertResultMatch, TestSuite} from '../../utils'
