@@ -19,6 +19,8 @@ export interface AccountRootLedgerEntry {
   TransferRate?: number
   WalletLocator?: string
   WalletSize?: number // DEPRECATED
+  MintedTokens?: number
+  BurnedTokens?: number
 }
 
 export interface AmendmentsLedgerEntry {
