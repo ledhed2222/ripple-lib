@@ -198,8 +198,8 @@ export const createNFToken = async (
     account: issuer,
     ledger_index: 'current',
   })
-  const tokenSequence = (accountData.account_data.MintedTokens || 0) + 1
-  const txSequence = (accountData.account_data.Sequence) || 0 
+  const tokenSequence = accountData.account_data.MintedTokens || 0
+  const txSequence = accountData.account_data.Sequence || 0 
 
   // Create tx
   const mintTx = {
