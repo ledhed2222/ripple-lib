@@ -7,6 +7,14 @@ import {ArgumentError, ValidationError} from '../common/errors'
 const HTTP_TIMEOUT_MS = 3000
 const DEFAULT_TAXON = 0
 const MAX_ON_LEDGER_STORAGE_BYTES = 512
+const DEFAULT_TRANSFER_FEE = 0
+
+// token ID pieces
+const TOKEN_ID_FLAG_LENGTH = 4
+const TOKEN_ID_FEE_LENGTH = 4
+const TOKEN_ID_ISSUER_LENGTH = 40
+const TOKEN_ID_TAXON_LENGTH = 8
+const TOKEN_ID_SEQUENCE_LENGTH = 8
 
 export enum NFTokenStorageOption {
   OnLedger,
@@ -17,6 +25,8 @@ export interface NFTokenParameters {
   issuingAccount: string,
   storageOption: NFTokenStorageOption,
   uri: string,
+  transferFee?: number,
+  flags?: number | [number],
   taxon?: number,
 }
 
@@ -133,21 +143,71 @@ export interface CreateNFTokenParameters extends NFTokenParameters {
   skipValidation?: boolean,
 }
 
+const getFlags = (flags?: number | [number]): number => {
+  if (flags == null) {
+    return 0
+  }
+  if (typeof flags === 'number') {
+    return flags
+  }
+  return flags.reduce((accumulator, flag) => accumulator | flag, 0)
+}
+
+const getTokenId = (flags: number, transferFee: number, issuer: string, taxon: number, tokenSequence: number): string => {
+  const issuerHex = Array.from(
+    RippleAPI.decodeXAddress(
+      RippleAPI.classicAddressToXAddress(
+        issuer,
+        false,
+        false,
+      ),
+    ).accountId,
+  ).map((byte) => byte.toString(16).padStart(2, '0')).join('')
+
+  return [
+    [flags, TOKEN_ID_FLAG_LENGTH],
+    [transferFee, TOKEN_ID_FEE_LENGTH],
+    [issuerHex, TOKEN_ID_ISSUER_LENGTH],
+    [taxon, TOKEN_ID_TAXON_LENGTH],
+    [tokenSequence, TOKEN_ID_SEQUENCE_LENGTH],
+  ].map(([value, padding]) => (
+    value.toString(16).padStart(parseInt(padding.toString()), '0')
+  )).join('').toUpperCase()
+}
+
 export const createNFToken = async (
   client: RippleAPI,
   senderSecret: string,
   params: CreateNFTokenParameters,
-): Promise<Object> => {
+): Promise<[string, Object]> => {
   // Validate prospective token
   if (params.skipValidation !== true) {
     await validateNFToken(params)
   }
 
+  const flags = getFlags(params.flags)
+  const transferFee = params.transferFee ?? DEFAULT_TRANSFER_FEE
+  const issuer = params.issuingAccount
+  const taxon = params.taxon ?? DEFAULT_TAXON
+
+  // get account data
+  // NOTE: we're getting the transaction sequence ourselves here because we
+  // also need to get the token sequence. Doing it this way will avoid a
+  // second call to 'account_info' from 'prepareTransaction'.
+  const accountData = await client.request('account_info', {
+    account: issuer,
+    ledger_index: 'current',
+  })
+  const tokenSequence = accountData.account_data.MintedTokens || 0
+  const txSequence = accountData.account_data.Sequence || 0 
+
   // Create tx
   const mintTx = {
     TransactionType: 'NFTokenMint',
-    Account: params.issuingAccount,
-    TokenTaxon: params.taxon ?? DEFAULT_TAXON,
+    Account: issuer,
+    TokenTaxon: taxon,
+    Flags: flags,
+    TransferFee: transferFee,
     URI: uriToHex(params.uri),
   }
   
@@ -155,10 +215,20 @@ export const createNFToken = async (
   // TODO: perhaps this function shouldn't actually submit for you, but rather
   // just return the populated tx for users to manipulate and later
   // sign/submit themselves
-  const preparedTx = await client.prepareTransaction(mintTx)
+  const preparedTx = await client.prepareTransaction(mintTx, { sequence: txSequence })
   const signedTx = client.sign(preparedTx.txJSON, senderSecret)
   const response = await client.request('submit', {
       tx_blob: signedTx.signedTransaction,
   })
-  return response.tx_json
+
+  return [
+    getTokenId(
+      flags,
+      transferFee,
+      issuer,
+      taxon,
+      tokenSequence,
+    ),
+    response,
+  ]
 }
