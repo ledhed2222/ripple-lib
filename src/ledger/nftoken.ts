@@ -164,15 +164,26 @@ const getTokenId = (flags: number, transferFee: number, issuer: string, taxon: n
     ).accountId,
   ).map((byte) => byte.toString(16).padStart(2, '0')).join('')
 
+  const scrambledTaxon = taxon ^ (multiplyUint32(384160001, tokenSequence) + 1)
+
   return [
     [flags, TOKEN_ID_FLAG_LENGTH],
     [transferFee, TOKEN_ID_FEE_LENGTH],
     [issuerHex, TOKEN_ID_ISSUER_LENGTH],
-    [taxon, TOKEN_ID_TAXON_LENGTH],
+    [scrambledTaxon, TOKEN_ID_TAXON_LENGTH],
     [tokenSequence, TOKEN_ID_SEQUENCE_LENGTH],
   ].map(([value, padding]) => (
     value.toString(16).padStart(parseInt(padding.toString()), '0')
   )).join('').toUpperCase()
+}
+
+// Super hacky way to multiply 32-bit numbers in JS
+// reference: https://stackoverflow.com/questions/6232939/is-there-a-way-to-correctly-multiply-two-32-bit-integers-in-javascript
+function multiplyUint32(a: number, b: number): number {
+  var ah = (a >> 16) & 0xffff, al = a & 0xffff
+  var bh = (b >> 16) & 0xffff, bl = b & 0xffff
+  var high = ((ah * bl) + (al * bh)) & 0xffff
+  return ((high << 16)>>>0) + (al * bl)
 }
 
 export const createNFToken = async (
