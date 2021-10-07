@@ -2,10 +2,11 @@
 
 ## Supported Versions
 
-This table shows which versions of ripple-lib are currently supported with security updates:
+This table shows which versions of xrpl.js are currently supported with security updates:
 
 | Version | Supported              |
 | ------- | ---------------------- |
+| 2.x     | :white_check_mark: Yes |
 | 1.x     | :white_check_mark: Yes |
 | 0.x     | :x:                No  |
 

@@ -19,12 +19,13 @@ unittest() {
   #mocha test --reporter mocha-junit-reporter --reporter-options mochaFile=$CIRCLE_TEST_REPORTS/test-results.xml
 
   npm test --coverage
+  #npm run coveralls
 
   # test compiled version in "dist/npm"
   $(npm bin)/babel -D --optional runtime --ignore "**/node_modules/**" -d test-compiled/ test/
   echo "--reporter spec --timeout 5000 --slow 500" > test-compiled/mocha.opts
   mkdir -p test-compiled/node_modules
-  ln -nfs ../../dist/npm test-compiled/node_modules/ripple-api
+  ln -nfs ../../dist/npm test-compiled/node_modules/xrpl-local
   mocha --opts test-compiled/mocha.opts test-compiled
 
   #compile tests for browser testing
@@ -32,9 +33,13 @@ unittest() {
   #node --harmony test-compiled/mocked-server.js > /dev/null &
 
   #echo "Running tests in PhantomJS"
-  #mocha-phantomjs test/localrunner.html
+  #mocha-phantomjs test/localRunner.html
   #echo "Running tests using minified version in PhantomJS"
-  #mocha-phantomjs test/localrunnermin.html
+  #mocha-phantomjs test/localRunnerMin.html
+
+  #echo "Running tests in SauceLabs"
+  #http-server &
+  #npm run sauce
 
   #pkill -f mocked-server.js
   #pkill -f http-server
@@ -42,12 +47,12 @@ unittest() {
 }
 
 integrationtest() {
-  mocha test/integration/integration-test.js
+  mocha test/integration/integration.js
 
   # run integration tests in PhantomJS
   #gulp build-tests build-min
   #echo "Running integragtion tests in PhantomJS"
-  #mocha-phantomjs test/localintegrationrunner.html
+  #mocha-phantomjs test/localIntegrationRunner.html
 }
 
 doctest() {
