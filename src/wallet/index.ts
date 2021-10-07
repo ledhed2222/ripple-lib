@@ -11,7 +11,7 @@ import {
   encodeForSigning,
   encodeForMultisigning,
   encode,
-} from 'ripple-binary-codec'
+} from '@ledhed2222/ripple-binary-codec'
 import {
   deriveAddress,
   deriveKeypair,

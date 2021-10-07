@@ -17,6 +17,8 @@ export default interface AccountRoot extends BaseLedgerEntry {
   TicketCount?: number
   TickSize?: number
   TransferRate?: number
+  MintedTokens?: number
+  BurnedTokens?: number
 }
 
 export enum AccountRootFlags {

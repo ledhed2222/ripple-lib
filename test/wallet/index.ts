@@ -1,5 +1,5 @@
 import { assert } from 'chai'
-import { decode } from 'ripple-binary-codec/dist'
+import { decode } from '@ledhed2222/ripple-binary-codec/dist'
 
 import { Transaction } from 'xrpl-local'
 import ECDSA from 'xrpl-local/ecdsa'

@@ -1,6 +1,6 @@
 import { assert } from 'chai'
-import { decode, encode } from 'ripple-binary-codec/dist'
-import { JsonObject } from 'ripple-binary-codec/dist/types/serialized-type'
+import { decode, encode } from '@ledhed2222/ripple-binary-codec/dist'
+import { JsonObject } from '@ledhed2222/ripple-binary-codec/dist/types/serialized-type'
 
 import { Transaction, ValidationError } from 'xrpl-local'
 import Wallet from 'xrpl-local/wallet'

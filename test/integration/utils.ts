@@ -1,6 +1,6 @@
 import { assert } from 'chai'
 import _ from 'lodash'
-import { decode } from 'ripple-binary-codec'
+import { decode } from '@ledhed2222/ripple-binary-codec'
 
 import { Client, Wallet, AccountInfoRequest } from 'xrpl-local'
 import { Payment, Transaction } from 'xrpl-local/models/transactions'

@@ -6,7 +6,7 @@ import {
   encode,
   encodeForSigning,
   encodeForSigningClaim,
-} from 'ripple-binary-codec'
+} from '@ledhed2222/ripple-binary-codec'
 import { sign as signWithKeypair, verify } from 'ripple-keypairs'
 
 import { ValidationError } from '../errors'

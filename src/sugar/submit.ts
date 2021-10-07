@@ -1,4 +1,4 @@
-import { decode, encode } from 'ripple-binary-codec'
+import { decode, encode } from '@ledhed2222/ripple-binary-codec'
 
 import type { Client, SubmitRequest, SubmitResponse, Wallet } from '..'
 import { ValidationError } from '../errors'

@@ -4,7 +4,7 @@
    bitwise operators for and-ing numbers with a mask and bit shifting. */
 
 import BigNumber from 'bignumber.js'
-import { decode, encode } from 'ripple-binary-codec'
+import { decode, encode } from '@ledhed2222/ripple-binary-codec'
 
 import { ValidationError } from '../../errors'
 import type { Ledger } from '../../models/ledger'
